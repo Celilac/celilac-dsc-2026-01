@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "src/common/enums/order-status.enum";
+import { OrderStatusEnum } from "src/common/orders/enums/order-status.enum";
 
 export class ConfirmOrderResponseDto {
     constructor(
