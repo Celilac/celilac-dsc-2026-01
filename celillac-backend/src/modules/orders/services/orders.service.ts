@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ORDERS_REPOSITORY } from "../repositories/orders.repository.interface";
-import type { OrdersRepository } from "../repositories/orders.repository.interface";
+import type { IOrdersRepository } from "../repositories/orders.repository.interface";
 import { ConfirmOrderResponseDto } from "../dto/confirm-order-response.dto";
 import { OrderNotFoundException } from "../../../common/orders/exceptions/order-not-found.exception";
 import { OrderAlreadyConfirmedException } from "../../../common/orders/exceptions/order-already-confirmed-exception";
@@ -15,7 +15,7 @@ import { PaymentStatusEnum } from "../../../common/payments/enums/payment-status
 export class OrdersService {
     constructor(
         @Inject(ORDERS_REPOSITORY)
-        private readonly ordersRepository: OrdersRepository,
+        private readonly ordersRepository: IOrdersRepository,
         @Inject(PAYMENTS_REPOSITORY)
         private readonly paymentsRepository: PaymentsRepository,
     ) { }

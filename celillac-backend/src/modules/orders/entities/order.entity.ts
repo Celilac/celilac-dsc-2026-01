@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { OrderStatusEnum } from "src/common/orders/enums/order-status.enum";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -5,10 +6,10 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedCol
 export class OrderEntity {
     @PrimaryGeneratedColumn('uuid',
         { name: 'order_id' })
-    orderId: string;
+    orderId: string = randomUUID();
 
     @Column({ name: 'customer_id' })
-    customerId: string;
+    customerId!: string;
 
     @Column({
         type: 'enum',
@@ -25,4 +26,26 @@ export class OrderEntity {
 
     @DeleteDateColumn()
     deletedAt: Date | null;
+
+    constructor(partial?: Partial<OrderEntity>) {
+        Object.assign(this, partial);
+
+        // if (!this.orderId) {
+        //     this.orderId = randomUUID();
+        // }
+        // if (!this.status) {
+        //     this.status = OrderStatusEnum.PENDING;
+        // }
+        // if (!this.createdAt) {
+        //     this.createdAt = new Date();
+        // }
+        // if (!this.updatedAt) {
+        //     this.updatedAt = new Date();
+        // }
+
+        // this.orderId = randomUUID();
+        // this.status = OrderStatusEnum.PENDING;
+        // this.createdAt = new Date();
+        // this.updatedAt = new Date();
+    }
 }

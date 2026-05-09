@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing";
 import { ORDERS_REPOSITORY } from "../repositories/orders.repository.interface";
-import type { OrdersRepository } from "../repositories/orders.repository.interface";
+import type { IOrdersRepository } from "../repositories/orders.repository.interface";
 import { OrdersService } from "./orders.service";
 import { OrderNotFoundException } from "../../../common/orders/exceptions/order-not-found.exception";
 import { OrderAlreadyConfirmedException } from "../../../common/orders/exceptions/order-already-confirmed-exception";
@@ -13,11 +13,11 @@ import { PaymentStatusEnum } from "../../../common/payments/enums/payment-status
 
 describe('OrdersService', () => {
     let ordersService: OrdersService;
-    let ordersRepository: jest.Mocked<OrdersRepository>;
+    let ordersRepository: jest.Mocked<IOrdersRepository>;
     let paymentsRepository: jest.Mocked<PaymentsRepository>;
 
     beforeEach(async () => {
-        const ordersRepositoryMock: OrdersRepository = {
+        const ordersRepositoryMock: IOrdersRepository = {
             findById: jest.fn(),
             save: jest.fn(),
         }

@@ -1,2 +1,2 @@
 ### Confirmar pedido com pagamento aprovado
-POST http://localhost:3002/orders/1111111-1111-1111-1111-111111111111/confirm
+POST http://localhost:3002/orders/11111111-1111-1111-1111-111111111111/confirm

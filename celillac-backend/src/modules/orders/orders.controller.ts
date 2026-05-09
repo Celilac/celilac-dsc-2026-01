@@ -7,8 +7,7 @@ export class OrdersController {
     constructor(private readonly ordersService: OrdersService) { }
 
     @Post(':id/confirm')
-    async confirmOrder(@Param('id') orderId: string,
-    ): Promise<ConfirmOrderResponseDto> {
+    async confirmOrder(@Param('id') orderId: string,  ): Promise<ConfirmOrderResponseDto> {
         return this.ordersService.confirmOrder(orderId);
     }
 }
