@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ProductsService {
   async create(data: any) {
-    throw new Error('Method not implemented.');
+    return {
+      ...data,
+      productId: randomUUID(),
+      status: 'available',
+    };
   }
 }
