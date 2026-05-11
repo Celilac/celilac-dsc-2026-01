@@ -35,8 +35,8 @@ describe('ProductsService', () => {
         }),
       );
 
-      expect(result.id).toBeDefined();
-      expect(typeof result.id).toBe('string');
+      expect(result.productId).toBeDefined();
+      expect(typeof result.productId).toBe('string');
       expect(typeof result.price).toBe('number');
       expect(result.price).toBe(25.90);
     });
