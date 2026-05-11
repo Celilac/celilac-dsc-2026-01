@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentEntity } from './modules/payments/entities/payment.entity';
 import { OrderEntity } from './modules/orders/entities/order.entity';
 import { OrdersModule } from './modules/orders/orders.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),
@@ -22,7 +23,8 @@ import { OrdersModule } from './modules/orders/orders.module';
       entities: [OrderEntity, PaymentEntity],
       synchronize: true,
     }),
-  }),],
+  }),
+  ProductsModule,],
   controllers: [AppController],
   providers: [AppService],
 })
