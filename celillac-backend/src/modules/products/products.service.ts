@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { ProductEntity } from './entities/product.entity';
+import { ProductStatusEnum } from '../../common/products/enums/product-status.enum';
 
 @Injectable()
 export class ProductsService {
-  async create(data: any) {
-    return {
-      ...data,
-      productId: randomUUID(),
-      status: 'available',
-    };
+  async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
+    return new ProductEntity({
+      ...createProductDto,
+      status: ProductStatusEnum.AVAILABLE,
+    });
   }
 }
