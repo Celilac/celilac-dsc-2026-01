@@ -4,13 +4,37 @@ services:
     container_name: celillac-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: celillac
-      POSTGRES_PASSWORD: celillac
-      POSTGRES_DB: celillac_db
+      POSTGRES_USER: ${DB_USERNAME:-celillac}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-celillac}
+      POSTGRES_DB: ${DB_DATABASE:-celillac_db}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - celillac-net
+
+  backend:
+    build: .
+    container_name: celillac-backend
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME:-celillac}
+      - DB_PASSWORD=${DB_PASSWORD:-celillac}
+      - DB_DATABASE=${DB_DATABASE:-celillac_db}
+    depends_on:
+      - postgres
+    networks:
+      - celillac-net
 
 volumes:
   postgres_data:
+
+networks:
+  celillac-net:
+    driver: bridge
