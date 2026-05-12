@@ -48,11 +48,13 @@ describe('ProductsController', () => {
   });
 
   describe('create', () => {
-    it('should create a valid product', async () => {
+    it('should create a valid product and return it as a DTO', async () => {
       const result = await controller.create(mockCreateProductDto);
 
       expect(service.create).toHaveBeenCalledWith(mockCreateProductDto);
-      expect(result).toEqual(mockProductEntity);
+      expect(result).toHaveProperty('id', mockProductEntity.productId);
+      expect(result).not.toHaveProperty('productId');
+      expect(result.name).toBe(mockProductEntity.name);
     });
   });
 });
