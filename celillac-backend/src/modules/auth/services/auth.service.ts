@@ -42,4 +42,8 @@ export class AuthService {
       user: userWithoutPassword,
     };
   }
+
+  async logout(): Promise<{ message: string }> {
+    return { message: 'Logout realizado com sucesso.' };
+  }
 }

@@ -145,6 +145,33 @@ describe('Users & Auth (e2e)', () => {
     });
   });
 
+  describe('POST /auth/logout (Logout)', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      const loginRes = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: 'admin@example.com', password: 'adminPassword123' });
+      token = loginRes.body.accessToken;
+    });
+
+    it('should deny logout if no token is provided', () => {
+      return request(app.getHttpServer())
+        .post('/auth/logout')
+        .expect(401);
+    });
+
+    it('should allow logout when valid token is provided', () => {
+      return request(app.getHttpServer())
+        .post('/auth/logout')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.message).toBe('Logout realizado com sucesso.');
+        });
+    });
+  });
+
   describe('GET /users & Roles Guard (Authorization)', () => {
     let userToken: string;
     let adminToken: string;

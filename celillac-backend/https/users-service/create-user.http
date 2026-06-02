@@ -73,10 +73,14 @@ Content-Type: application/json
   "password": "adminPassword123"
 }
 
-###
-
 ### Guardar o Token JWT da resposta acima
 @authToken = {{login.response.body.accessToken}}
+
+###
+
+### 6.1 Efetuar Logout (Sucesso - 200 OK)
+POST http://localhost:3003/auth/logout
+Authorization: Bearer {{authToken}}
 
 ###
 

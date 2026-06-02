@@ -118,4 +118,11 @@ describe('AuthService', () => {
       expect(jwtService.sign).not.toHaveBeenCalled();
     });
   });
+
+  describe('logout', () => {
+    it('should return a logout success message', async () => {
+      const result = await service.logout();
+      expect(result).toEqual({ message: 'Logout realizado com sucesso.' });
+    });
+  });
 });
