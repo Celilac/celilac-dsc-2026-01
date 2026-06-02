@@ -1,0 +1,65 @@
+# Módulo de Autenticação (Auth Service)
+
+@baseUrl = http://localhost:3003
+@contentType = application/json
+
+### 1. Criar um Usuário de Teste (Caso não exista)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Everton Auth Test",
+  "email": "everton.auth@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### 2. Login com Credenciais Válidas (Sucesso - 200 OK)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "everton.auth@example.com",
+  "password": "password123"
+}
+
+###
+
+### Guardar o Token JWT da resposta acima
+@authToken = {{login.response.body.accessToken}}
+
+###
+
+### 3. Login com Senha Incorreta (Erro - 401 Unauthorized)
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "everton.auth@example.com",
+  "password": "wrongPassword123"
+}
+
+###
+
+### 4. Login com E-mail Inexistente (Erro - 401 Unauthorized)
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "nonexistent@example.com",
+  "password": "somePassword123"
+}
+
+###
+
+### 5. Logout com Token Válido (Sucesso - 200 OK)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{authToken}}
+
+###
+
+### 6. Logout sem Token (Erro - 401 Unauthorized)
+POST {{baseUrl}}/auth/logout

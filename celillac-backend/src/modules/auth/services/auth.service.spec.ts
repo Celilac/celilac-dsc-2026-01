@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
 import { IUSERS_REPOSITORY } from '../../users/repositories/users.repository.interface';
 import type { IUsersRepository } from '../../users/repositories/users.repository.interface';
 import { JwtService } from '@nestjs/jwt';
@@ -7,6 +6,7 @@ import { UserEntity } from '../../users/entities/user.entity';
 import { UserRoleEnum } from '../../../common/users/enums/user-role.enum';
 import { InvalidCredentialsException } from '../../../common/auth/exceptions/invalid-credentials.exception';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from './auth.service';
 
 jest.mock('bcrypt');
 
