@@ -1,5 +1,5 @@
 ### Criar um novo produto
-POST http://localhost:3003/products
+POST http://localhost:3002/products
 Content-Type: application/json
 
 {

@@ -1,6 +1,6 @@
 # Módulo de Autenticação (Auth Service)
 
-@baseUrl = http://localhost:3003
+@baseUrl = http://localhost:3002
 @contentType = application/json
 
 ### 1. Criar um Usuário de Teste (Caso não exista)
@@ -22,8 +22,8 @@ POST {{baseUrl}}/auth/login
 Content-Type: {{contentType}}
 
 {
-  "email": "everton.auth@example.com",
-  "password": "password123"
+  "email": "everton.admin@example.com",
+  "password": "adminPassword123"
 }
 
 ###

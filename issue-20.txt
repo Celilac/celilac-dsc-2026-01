@@ -1,0 +1,77 @@
+title:	UC12-10-Ajustar resposta da API após cadastro de produto
+state:	OPEN
+author:	evertonfoz
+labels:	
+comments:	0
+assignees:	
+projects:	
+milestone:	
+number:	20
+--
+Descrição:
+Implementar o ajuste necessário para que o endpoint de cadastro de produto retorne uma resposta HTTP adequada após o cadastro bem-sucedido.
+
+Esta issue representa a etapa Green do ciclo TDD: a implementação deve ser mínima e suficiente para fazer passar o teste criado anteriormente para retorno do produto cadastrado pela API.
+
+Caso de uso:
+UC12 — Cadastrar produto
+
+Escopo da implementação:
+Ajustar o endpoint POST /products para retornar corretamente o status HTTP e o corpo da resposta após a criação do produto.
+
+A implementação deve garantir que:
+
+a API retorne status 201 Created;
+o corpo da resposta contenha os dados do produto criado;
+o retorno não exponha detalhes internos da aplicação;
+a resposta esteja padronizada para consumo pelo frontend ou por outros clientes.
+
+Requisição esperada:
+
+POST /products
+Content-Type: application/json
+{
+  "name": "Bolo sem glúten",
+  "description": "Bolo artesanal sem glúten",
+  "price": 25.90,
+  "partnerId": "partner-001"
+}
+
+Comportamento esperado da implementação:
+
+Status HTTP:
+
+201 Created
+
+Corpo da resposta:
+
+{
+  "id": "generated-id",
+  "name": "Bolo sem glúten",
+  "description": "Bolo artesanal sem glúten",
+  "price": 25.90,
+  "partnerId": "partner-001",
+  "status": "available"
+}
+
+Critérios de aceite:
+
+A implementação deve fazer passar o teste de retorno do produto cadastrado pela API.
+O endpoint POST /products deve retornar status HTTP 201 Created.
+O corpo da resposta deve conter os dados esperados do produto criado.
+O retorno deve estar padronizado e não deve expor detalhes internos da aplicação.
+A implementação deve manter a separação entre controller, service e repository.
+A implementação deve ser mínima, sem adicionar regras não solicitadas.
+Nenhum outro endpoint deve ser implementado nesta issue.
+
+Fora de escopo nesta issue:
+
+criar teste novo;
+alterar validações já implementadas;
+alterar persistência já implementada;
+implementar autenticação real do parceiro;
+implementar classificação alimentar;
+implementar ingredientes;
+implementar contaminação cruzada;
+implementar imagens do produto;
+implementar endpoints de consulta, atualização ou remoção de produtos.

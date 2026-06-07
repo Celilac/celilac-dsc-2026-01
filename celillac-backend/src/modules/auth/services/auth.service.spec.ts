@@ -77,6 +77,10 @@ describe('AuthService', () => {
       expect(result.user.userId).toBe(user.userId);
       expect(result.user.email).toBe(user.email);
       expect((result.user as any).password).toBeUndefined();
+      expect((result.user as any).name).toBeUndefined();
+      expect((result.user as any).createdAt).toBeUndefined();
+      expect((result.user as any).updatedAt).toBeUndefined();
+      expect((result.user as any).deletedAt).toBeUndefined();
 
       expect(usersRepository.findByEmail).toHaveBeenCalledWith(email);
       expect(bcrypt.compare).toHaveBeenCalledWith(rawPassword, hashedPassword);

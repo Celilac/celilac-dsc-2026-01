@@ -15,7 +15,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto): Promise<{ accessToken: string; user: UserResponseDto }> {
+  async login(loginDto: LoginDto): Promise<{
+    accessToken: string;
+    user: Omit<UserResponseDto, 'name' | 'createdAt' | 'updatedAt' | 'deletedAt'>;
+  }> {
     const user = await this.usersRepository.findByEmail(loginDto.email);
     if (!user || user.deletedAt) {
       throw new InvalidCredentialsException();
@@ -34,12 +37,12 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign(payload);
 
-    // Omit password from returned user entity
-    const { password, ...userWithoutPassword } = user;
+    // Omit password, name, and date fields from returned user entity
+    const { password, name, createdAt, updatedAt, deletedAt, ...userResponse } = user;
 
     return {
       accessToken,
-      user: userWithoutPassword,
+      user: userResponse,
     };
   }
 

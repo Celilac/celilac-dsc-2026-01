@@ -1,5 +1,5 @@
 ### 1. Criar um novo usuário com dados VÁLIDOS (Sucesso - 201 Created)
-POST http://localhost:3003/users
+POST http://localhost:3002/users
 Content-Type: application/json
 
 {

@@ -131,6 +131,11 @@ describe('Users & Auth (e2e)', () => {
           expect(res.body).toHaveProperty('accessToken');
           expect(res.body.user.email).toBe('admin@example.com');
           expect(res.body.user.role).toBe(UserRoleEnum.ADMIN);
+          expect(res.body.user.name).toBeUndefined();
+          expect(res.body.user.password).toBeUndefined();
+          expect(res.body.user.createdAt).toBeUndefined();
+          expect(res.body.user.updatedAt).toBeUndefined();
+          expect(res.body.user.deletedAt).toBeUndefined();
         });
     });
 
