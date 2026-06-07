@@ -1,0 +1,117 @@
+### 1. Criar um novo usuário com dados VÁLIDOS (Sucesso - 201 Created)
+POST http://localhost:3002/users
+Content-Type: application/json
+
+{
+  "name": "Everton Admin",
+  "email": "everton.admin@example.com",
+  "password": "adminPassword123",
+  "role": "admin"
+}
+
+###
+
+### 2. Criar um usuário comum com dados VÁLIDOS (Sucesso - 201 Created)
+POST http://localhost:3003/users
+Content-Type: application/json
+
+{
+  "name": "User Comum",
+  "email": "user.comum@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### 3. Criar com e-mail INVÁLIDO (Erro - 400 Bad Request)
+POST http://localhost:3003/users
+Content-Type: application/json
+
+{
+  "name": "Usuário Teste",
+  "email": "usuario.testeexample.com",
+  "password": "senhaSegura123",
+  "role": "user"
+}
+
+###
+
+### 4. Criar com role VAZIA/INVÁLIDA (Erro - 400 Bad Request)
+POST http://localhost:3003/users
+Content-Type: application/json
+
+{
+  "name": "Usuário Teste",
+  "email": "usuario.teste@example.com",
+  "password": "senhaSegura123",
+  "role": ""
+}
+
+###
+
+### 5. Criar com senha CURTA (Erro - 400 Bad Request)
+POST http://localhost:3003/users
+Content-Type: application/json
+
+{
+  "name": "Usuário Teste",
+  "email": "usuario.teste@example.com",
+  "password": "123",
+  "role": "user"
+}
+
+###
+
+### 6. Efetuar Login com Credenciais Corretas (Sucesso - 200 OK)
+# @name login
+POST http://localhost:3003/auth/login
+Content-Type: application/json
+
+{
+  "email": "everton.admin@example.com",
+  "password": "adminPassword123"
+}
+
+### Guardar o Token JWT da resposta acima
+@authToken = {{login.response.body.accessToken}}
+
+###
+
+### 6.1 Efetuar Logout (Sucesso - 200 OK)
+POST http://localhost:3003/auth/logout
+Authorization: Bearer {{authToken}}
+
+###
+
+### 7. Listar todos os usuários - Requer papel ADMIN (Sucesso - 200 OK)
+GET http://localhost:3003/users
+Authorization: Bearer {{authToken}}
+
+###
+
+### 8. Listar sem Token JWT (Erro - 401 Unauthorized)
+GET http://localhost:3003/users
+
+###
+
+### 9. Obter um usuário específico por ID
+GET http://localhost:3003/users/uuid-de-exemplo
+Authorization: Bearer {{authToken}}
+
+###
+
+### 10. Atualizar dados cadastrais do próprio usuário
+PUT http://localhost:3003/users/uuid-de-exemplo
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Nome Atualizado"
+}
+
+###
+
+### 11. Deleção lógica (Soft Delete) - Requer papel ADMIN
+DELETE http://localhost:3003/users/uuid-de-exemplo
+Authorization: Bearer {{authToken}}

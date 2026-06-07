@@ -1,0 +1,10 @@
+### Criar um novo produto
+POST http://localhost:3002/products
+Content-Type: application/json
+
+{
+  "name": "Produto Teste",
+  "description": "Descrição do produto teste",
+  "price": 100.50,
+  "partnerId": "11111111-1111-1111-1111-111111111111"
+}

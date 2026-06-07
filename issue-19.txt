@@ -1,0 +1,77 @@
+title:	UC12-09-Criar teste para retornar produto cadastrado pela API
+state:	OPEN
+author:	evertonfoz
+labels:	
+comments:	0
+assignees:	
+projects:	
+milestone:	
+number:	19
+--
+Descrição:
+Criar um teste automatizado para validar que a API retorna corretamente os dados do produto após um cadastro bem-sucedido.
+
+Esta issue representa a etapa Red do ciclo TDD: o teste deve ser escrito antes do ajuste final no endpoint e deve falhar inicialmente caso a API ainda não retorne a resposta esperada.
+
+Caso de uso:
+UC12 — Cadastrar produto
+
+Escopo do teste:
+Criar um teste que verifique a resposta HTTP do endpoint de cadastro de produto.
+
+O teste deve validar que:
+
+a API recebe uma requisição válida;
+o produto é cadastrado;
+a resposta possui status HTTP adequado;
+o corpo da resposta contém os dados do produto cadastrado;
+o retorno não expõe informações internas desnecessárias.
+
+Requisição usada no teste:
+
+POST /products
+Content-Type: application/json
+{
+  "name": "Bolo sem glúten",
+  "description": "Bolo artesanal sem glúten",
+  "price": 25.90,
+  "partnerId": "partner-001"
+}
+
+Comportamento esperado pelo teste:
+
+Status HTTP esperado:
+
+201 Created
+
+Corpo esperado:
+
+{
+  "id": "generated-id",
+  "name": "Bolo sem glúten",
+  "description": "Bolo artesanal sem glúten",
+  "price": 25.90,
+  "partnerId": "partner-001",
+  "status": "available"
+}
+
+Critérios de aceite:
+
+O teste deve ser criado antes do ajuste final da resposta da API.
+O teste deve falhar inicialmente, se o endpoint ainda não retornar o formato esperado.
+O teste deve validar o status HTTP 201 Created.
+O teste deve validar o corpo da resposta.
+O teste deve garantir que os dados retornados correspondem ao produto cadastrado.
+O teste deve estar relacionado ao caso de uso UC12.
+Nenhuma implementação do ajuste da API deve ser feita nesta issue.
+
+Fora de escopo nesta issue:
+
+implementar o ajuste final do endpoint;
+alterar regras de validação já implementadas;
+alterar persistência já implementada;
+implementar autenticação real do parceiro;
+implementar classificação alimentar;
+implementar ingredientes;
+implementar contaminação cruzada;
+implementar outros endpoints.

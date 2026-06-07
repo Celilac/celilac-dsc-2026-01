@@ -15,11 +15,17 @@ services:
       - celillac-net
 
   backend:
-    build: .
+    build:
+      context: .
+      target: builder
     container_name: celillac-backend
     restart: unless-stopped
     ports:
       - "3002:3002"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm run start:dev
     environment:
       - PORT=3002
       - DB_HOST=postgres
