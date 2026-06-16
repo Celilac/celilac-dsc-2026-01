@@ -11,6 +11,76 @@ interface AuthModalProps {
 
 type Mode = 'login' | 'register' | 'recover';
 
+function translateSingleErrorMessage(msg: string): string {
+  const lowerMsg = msg.toLowerCase();
+  
+  if (
+    lowerMsg.includes('email already exists') ||
+    lowerMsg.includes('e-mail informado já está em uso') ||
+    lowerMsg.includes('already in use')
+  ) {
+    return 'Este e-mail já está cadastrado no sistema.';
+  }
+  
+  if (
+    lowerMsg.includes('invalid credentials') || 
+    lowerMsg.includes('credenciais inválidas') ||
+    lowerMsg.includes('unauthorized') ||
+    lowerMsg.includes('não autorizado')
+  ) {
+    return 'E-mail ou senha incorretos.';
+  }
+
+  if (lowerMsg.includes('password must be longer than or equal to 6 characters')) {
+    return 'A senha deve conter pelo menos 6 caracteres.';
+  }
+  if (lowerMsg.includes('password must be longer than or equal to 8 characters')) {
+    return 'A senha deve conter pelo menos 8 caracteres.';
+  }
+  if (lowerMsg.includes('password should not be empty')) {
+    return 'A senha não pode estar vazia.';
+  }
+  if (lowerMsg.includes('password must be a string')) {
+    return 'A senha deve ser um texto válido.';
+  }
+
+  if (lowerMsg.includes('email must be an email')) {
+    return 'O formato do e-mail é inválido. Por favor, insira um e-mail válido.';
+  }
+  if (lowerMsg.includes('email should not be empty')) {
+    return 'O e-mail é obrigatório.';
+  }
+  if (lowerMsg.includes('email must be a string')) {
+    return 'O e-mail deve ser um texto válido.';
+  }
+
+  if (lowerMsg.includes('name should not be empty') || lowerMsg.includes('name não pode estar vazio')) {
+    return 'O nome completo é obrigatório.';
+  }
+  if (lowerMsg.includes('name must be a string')) {
+    return 'O nome deve ser um texto válido.';
+  }
+
+  if (lowerMsg.includes('role must be one of the following values')) {
+    return 'Perfil de usuário inválido.';
+  }
+
+  return msg;
+}
+
+function translateBackendError(message: string): string {
+  if (!message) return 'Ocorreu um erro inesperado.';
+  
+  if (message.includes(',')) {
+    const parts = message.split(',').map(part => part.trim());
+    const translatedParts = parts.map(part => translateSingleErrorMessage(part));
+    const uniqueParts = Array.from(new Set(translatedParts));
+    return uniqueParts.join(' ');
+  }
+  
+  return translateSingleErrorMessage(message);
+}
+
 export function AuthModal({ isOpen, onClose, onAuthSuccess, showToast }: AuthModalProps) {
   const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
@@ -110,7 +180,8 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, showToast }: AuthMod
       }
     } catch (err: unknown) {
       console.error(err);
-      const errorMessage = err instanceof Error ? err.message : 'Ocorreu um erro ao processar a requisição.';
+      const rawErrorMessage = err instanceof Error ? err.message : 'Ocorreu um erro ao processar a requisição.';
+      const errorMessage = translateBackendError(rawErrorMessage);
       showToast(errorMessage, 'error');
       setErrors({ form: errorMessage });
     } finally {

@@ -49,7 +49,7 @@ export function Toast({ message, type, onClose, duration = 4000 }: ToastProps) {
   const config = typeStyles[type];
 
   return (
-    <div className={`fixed bottom-4 right-4 z-50 flex items-center gap-3 p-4 rounded-xl backdrop-blur-md bg-slate-900/90 border border-slate-800 border-l-4 ${config.border} shadow-2xl animate-fade-in-slide-left max-w-sm`}>
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 p-4 rounded-xl backdrop-blur-md bg-slate-900/90 border border-slate-800 border-l-4 ${config.border} shadow-2xl animate-fade-in-slide-left max-w-sm`}>
       <div className={config.iconColor}>{config.icon}</div>
       <p className="text-sm font-medium text-slate-200 pr-4">{message}</p>
       <button
