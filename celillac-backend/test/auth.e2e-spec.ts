@@ -71,7 +71,7 @@ describe('AuthController (e2e)', () => {
         .send({ email: 'auth.test@example.com', password: 'wrongPassword' })
         .expect(401)
         .expect((res) => {
-          expect(res.body.message).toBe('Invalid credentials.');
+          expect(res.body.message).toBe('Credenciais inválidas.');
         });
     });
 
@@ -81,7 +81,7 @@ describe('AuthController (e2e)', () => {
         .send({ email: 'non.existent@example.com', password: 'password123' })
         .expect(401)
         .expect((res) => {
-          expect(res.body.message).toBe('Invalid credentials.');
+          expect(res.body.message).toBe('Credenciais inválidas.');
         });
     });
 

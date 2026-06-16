@@ -92,7 +92,7 @@ describe('Orders & Auth (e2e)', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .expect(404)
         .expect((res) => {
-          expect(res.body.message).toContain(`Order with id "${dummyOrderId}" was not found.`);
+          expect(res.body.message).toContain('Pedido não encontrado.');
         });
     });
   });

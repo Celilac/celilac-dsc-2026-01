@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 
 export class OrderNotFoundException extends NotFoundException {
-  constructor(orderId: string) {
-    super(`Order with id "${orderId}" was not found.`);
+  constructor() {
+    super('Pedido não encontrado.');
   }
 }

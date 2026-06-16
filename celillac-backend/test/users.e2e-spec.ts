@@ -145,7 +145,7 @@ describe('Users & Auth (e2e)', () => {
         .send({ email: 'admin@example.com', password: 'wrongPassword' })
         .expect(401)
         .expect((res) => {
-          expect(res.body.message).toBe('Invalid credentials.');
+          expect(res.body.message).toBe('Credenciais inválidas.');
         });
     });
   });

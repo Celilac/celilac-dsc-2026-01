@@ -24,16 +24,16 @@ export class OrdersService {
         const order = await this.ordersRepository.findById(orderId);
 
         if (!order) {
-            throw new OrderNotFoundException(orderId);
+            throw new OrderNotFoundException();
         }
 
         if (order.status === OrderStatusEnum.CONFIRMED)
-            throw new OrderAlreadyConfirmedException(orderId);
+            throw new OrderAlreadyConfirmedException();
 
         const payment = await this.paymentsRepository.findByOrderId(orderId);
-        if (!payment) throw new PaymentNotFoundException(orderId);
+        if (!payment) throw new PaymentNotFoundException();
         if (payment.status !== PaymentStatusEnum.APPROVED)
-            throw new PaymentNotApprovedException(payment.status);
+            throw new PaymentNotApprovedException();
 
         order.status = OrderStatusEnum.CONFIRMED;
         order.updatedAt = new Date();
