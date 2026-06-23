@@ -12,8 +12,20 @@ export interface LoginResponse {
   user: User;
 }
 
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  role?: string;
+}
+
 export const authService = {
-  async login(loginData: any): Promise<LoginResponse> {
+  async login(loginData: LoginData): Promise<LoginResponse> {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
@@ -31,7 +43,7 @@ export const authService = {
     return data;
   },
 
-  async register(registerData: any): Promise<User> {
+  async register(registerData: RegisterData): Promise<User> {
     // We send role: 'user' as default for self-registrations
     const payload = {
       ...registerData,

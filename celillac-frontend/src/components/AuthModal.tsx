@@ -208,8 +208,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, showToast }: AuthMod
       setErrors((prev) => ({ ...prev, email: 'E-mail inválido' }));
     } else {
       setErrors((prev) => {
-        const { email, ...rest } = prev;
-        return rest;
+        const next = { ...prev };
+        delete next.email;
+        return next;
       });
     }
   };

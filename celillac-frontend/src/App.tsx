@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AuthModal } from './components/AuthModal'
 import { Toast } from './components/Toast'
 import type { User } from './services/auth.service'
@@ -17,25 +17,22 @@ function App() {
   const [filter, setFilter] = useState<'all' | 'available'>('all')
 
   // Auth & UI States
-  const [user, setUser] = useState<User | null>(null)
-  const [, setToken] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem('celillac_user')
+    const savedToken = localStorage.getItem('celillac_token')
+    if (!savedUser || !savedToken) return null
+    try {
+      return JSON.parse(savedUser) as User
+    } catch {
+      localStorage.removeItem('celillac_user')
+      localStorage.removeItem('celillac_token')
+      return null
+    }
+  })
+  const [, setToken] = useState<string | null>(() => localStorage.getItem('celillac_token'))
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem('celillac_user')
-    const savedToken = localStorage.getItem('celillac_token')
-    if (savedUser && savedToken) {
-      try {
-        setUser(JSON.parse(savedUser))
-        setToken(savedToken)
-      } catch (e) {
-        localStorage.removeItem('celillac_user')
-        localStorage.removeItem('celillac_token')
-      }
-    }
-  }, [])
 
   const showToast = (message: string, type: 'success' | 'error' | 'info') => {
     setToast({ message, type })
