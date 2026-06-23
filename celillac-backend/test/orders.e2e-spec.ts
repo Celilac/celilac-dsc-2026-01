@@ -28,7 +28,9 @@ describe('Orders & Auth (e2e)', () => {
     );
     await app.init();
 
-    userRepo = moduleFixture.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
+    userRepo = moduleFixture.get<Repository<UserEntity>>(
+      getRepositoryToken(UserEntity),
+    );
     // Clear user repository to avoid collisions
     await userRepo.clear();
 
@@ -39,7 +41,10 @@ describe('Orders & Auth (e2e)', () => {
       password: 'password123',
       role: UserRoleEnum.USER,
     };
-    await request(app.getHttpServer()).post('/users').send(userPayload).expect(201);
+    await request(app.getHttpServer())
+      .post('/users')
+      .send(userPayload)
+      .expect(201);
 
     // Create an admin user
     const adminPayload = {
@@ -48,7 +53,10 @@ describe('Orders & Auth (e2e)', () => {
       password: 'password123',
       role: UserRoleEnum.ADMIN,
     };
-    await request(app.getHttpServer()).post('/users').send(adminPayload).expect(201);
+    await request(app.getHttpServer())
+      .post('/users')
+      .send(adminPayload)
+      .expect(201);
 
     // Authenticate user
     const userLoginRes = await request(app.getHttpServer())

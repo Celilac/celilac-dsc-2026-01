@@ -30,7 +30,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         exceptionResponse !== null &&
         'message' in exceptionResponse
       ) {
-        const resMessage = (exceptionResponse as any).message;
+        const resMessage = (exceptionResponse as { message: unknown }).message;
         if (Array.isArray(resMessage)) {
           message = resMessage.join(', ');
         } else if (typeof resMessage === 'string') {

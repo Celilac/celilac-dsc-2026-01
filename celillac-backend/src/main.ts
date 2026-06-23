@@ -1,25 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   app.enableCors({
     origin: true, // Configuração flexível: true permite a origem da requisição, ou você pode colocar o domínio do frontend (ex: 'http://localhost:3000')
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  
+
   app.useGlobalFilters(new AllExceptionsFilter());
-  
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Celilac API')
@@ -30,12 +33,15 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, documentFactory);
 
-  const port = process.env.PORT ?? 3002;
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>('app.port')!;
   const logger = new Logger('Bootstrap');
 
   await app.listen(port);
   logger.log(`Application is running on: http://localhost:${port}`);
-  logger.log(`Swagger documentation is available at: http://localhost:${port}/api/docs`);
+  logger.log(
+    `Swagger documentation is available at: http://localhost:${port}/api/docs`,
+  );
 }
 
-bootstrap();
+void bootstrap();

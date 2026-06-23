@@ -26,7 +26,9 @@ describe('Users & Auth (e2e)', () => {
     );
     await app.init();
 
-    userRepo = moduleFixture.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
+    userRepo = moduleFixture.get<Repository<UserEntity>>(
+      getRepositoryToken(UserEntity),
+    );
     await userRepo.clear();
   });
 
@@ -88,7 +90,9 @@ describe('Users & Auth (e2e)', () => {
         .send(payload)
         .expect(400)
         .expect((res) => {
-          expect(res.body.message).toContain('role must be one of the following values: admin, user');
+          expect(res.body.message).toContain(
+            'role must be one of the following values: admin, user',
+          );
         });
     });
 
@@ -105,7 +109,9 @@ describe('Users & Auth (e2e)', () => {
         .send(payload)
         .expect(400)
         .expect((res) => {
-          expect(res.body.message).toContain('password must be longer than or equal to 6 characters');
+          expect(res.body.message).toContain(
+            'password must be longer than or equal to 6 characters',
+          );
         });
     });
   });
@@ -161,9 +167,7 @@ describe('Users & Auth (e2e)', () => {
     });
 
     it('should deny logout if no token is provided', () => {
-      return request(app.getHttpServer())
-        .post('/auth/logout')
-        .expect(401);
+      return request(app.getHttpServer()).post('/auth/logout').expect(401);
     });
 
     it('should allow logout when valid token is provided', () => {

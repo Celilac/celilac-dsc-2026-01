@@ -17,7 +17,9 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
+    const existingUser = await this.usersRepository.findByEmail(
+      createUserDto.email,
+    );
     if (existingUser) {
       throw new UserEmailAlreadyExistsException();
     }
@@ -55,7 +57,10 @@ export class UsersService {
       });
   }
 
-  async update(userId: string, updateUserDto: UpdateUserDto): Promise<UserResponseDto> {
+  async update(
+    userId: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserResponseDto> {
     const user = await this.usersRepository.findById(userId);
     if (!user || user.deletedAt) {
       throw new UserNotFoundException();
@@ -83,4 +88,3 @@ export class UsersService {
     await this.usersRepository.save(user);
   }
 }
-

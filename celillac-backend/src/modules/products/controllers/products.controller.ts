@@ -11,9 +11,15 @@ export class ProductsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new product' })
-  @ApiResponse({ status: 201, description: 'The product has been successfully created.', type: ProductResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'The product has been successfully created.',
+    type: ProductResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
-  async create(@Body() createProductDto: CreateProductDto): Promise<ProductResponseDto> {
+  async create(
+    @Body() createProductDto: CreateProductDto,
+  ): Promise<ProductResponseDto> {
     const product = await this.productsService.create(createProductDto);
     return ProductResponseDto.fromEntity(product);
   }

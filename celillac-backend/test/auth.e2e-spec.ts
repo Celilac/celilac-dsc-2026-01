@@ -6,7 +6,6 @@ import { UserRoleEnum } from './../src/common/users/enums/user-role.enum';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from './../src/modules/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -28,21 +27,21 @@ describe('AuthController (e2e)', () => {
     );
     await app.init();
 
-    userRepo = moduleFixture.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
-    
+    userRepo = moduleFixture.get<Repository<UserEntity>>(
+      getRepositoryToken(UserEntity),
+    );
+
     // Clear user repository to ensure a clean state
     await userRepo.clear();
 
     // Create a user via the registration endpoint to simulate a real end-to-end flow
-    const response = await request(app.getHttpServer())
-      .post('/users')
-      .send({
-        name: 'Auth Test User',
-        email: 'auth.test@example.com',
-        password: 'authPassword123',
-        role: UserRoleEnum.USER,
-      });
-      
+    const response = await request(app.getHttpServer()).post('/users').send({
+      name: 'Auth Test User',
+      email: 'auth.test@example.com',
+      password: 'authPassword123',
+      role: UserRoleEnum.USER,
+    });
+
     testUser = response.body;
   });
 
@@ -128,9 +127,7 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should deny access if no token is provided', () => {
-      return request(app.getHttpServer())
-        .post('/auth/logout')
-        .expect(401);
+      return request(app.getHttpServer()).post('/auth/logout').expect(401);
     });
 
     it('should deny access if an invalid token is provided', () => {
