@@ -57,10 +57,12 @@ describe('UsersService', () => {
 
       repository.findByEmail.mockResolvedValue(null);
       repository.save.mockImplementation((user: UserEntity) => {
-        return Promise.resolve(new UserEntity({
-          ...user,
-          userId: 'generated-uuid-1234',
-        }));
+        return Promise.resolve(
+          new UserEntity({
+            ...user,
+            userId: 'generated-uuid-1234',
+          }),
+        );
       });
 
       const result = await service.create(mockCreateUserDto);
@@ -71,7 +73,9 @@ describe('UsersService', () => {
       expect(result.email).toBe(mockCreateUserDto.email);
       expect((result as any).password).toBeUndefined();
       expect(result.role).toBe(mockCreateUserDto.role);
-      expect(repository.findByEmail).toHaveBeenCalledWith(mockCreateUserDto.email);
+      expect(repository.findByEmail).toHaveBeenCalledWith(
+        mockCreateUserDto.email,
+      );
       expect(repository.save).toHaveBeenCalled();
     });
 
@@ -90,7 +94,9 @@ describe('UsersService', () => {
         UserEmailAlreadyExistsException,
       );
 
-      expect(repository.findByEmail).toHaveBeenCalledWith(mockCreateUserDto.email);
+      expect(repository.findByEmail).toHaveBeenCalledWith(
+        mockCreateUserDto.email,
+      );
       expect(repository.save).not.toHaveBeenCalled();
     });
 
@@ -99,7 +105,9 @@ describe('UsersService', () => {
       (bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword);
 
       repository.findByEmail.mockResolvedValue(null);
-      repository.save.mockImplementation((user: UserEntity) => Promise.resolve(user));
+      repository.save.mockImplementation((user: UserEntity) =>
+        Promise.resolve(user),
+      );
 
       await service.create(mockCreateUserDto);
 
@@ -127,7 +135,9 @@ describe('UsersService', () => {
     it('should throw UserNotFoundException if user does not exist', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.findById('non-existing')).rejects.toThrow(UserNotFoundException);
+      await expect(service.findById('non-existing')).rejects.toThrow(
+        UserNotFoundException,
+      );
     });
 
     it('should throw UserNotFoundException if user is soft-deleted', async () => {
@@ -138,7 +148,9 @@ describe('UsersService', () => {
       });
       repository.findById.mockResolvedValue(deletedUser);
 
-      await expect(service.findById('deleted-id')).rejects.toThrow(UserNotFoundException);
+      await expect(service.findById('deleted-id')).rejects.toThrow(
+        UserNotFoundException,
+      );
     });
   });
 
@@ -192,7 +204,9 @@ describe('UsersService', () => {
     it('should throw UserNotFoundException if user to update does not exist', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.update('non-existing', { name: 'Name' })).rejects.toThrow(UserNotFoundException);
+      await expect(
+        service.update('non-existing', { name: 'Name' }),
+      ).rejects.toThrow(UserNotFoundException);
     });
   });
 
@@ -214,7 +228,9 @@ describe('UsersService', () => {
     it('should throw UserNotFoundException if user to delete does not exist', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.delete('non-existing')).rejects.toThrow(UserNotFoundException);
+      await expect(service.delete('non-existing')).rejects.toThrow(
+        UserNotFoundException,
+      );
     });
   });
 });

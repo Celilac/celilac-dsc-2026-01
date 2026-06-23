@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { envSchema, databaseConfig, jwtConfig, appConfig } from './config';
 import { PaymentEntity } from './modules/payments/entities/payment.entity';
 import { OrderEntity } from './modules/orders/entities/order.entity';
 import { OrdersModule } from './modules/orders/orders.module';
@@ -14,27 +15,30 @@ import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [databaseConfig, jwtConfig, appConfig],
+      validate: (config) => envSchema.parse(config),
+    }),
     OrdersModule,
     ProductsModule,
     UsersModule,
     AuthModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (cs: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: Number(configService.get<string>('DB_PORT')),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
+        host: cs.get('database.host'),
+        port: cs.get<number>('database.port'),
+        username: cs.get('database.username'),
+        password: cs.get('database.password'),
+        database: cs.get('database.database'),
         entities: [OrderEntity, PaymentEntity, ProductEntity, UserEntity],
-        synchronize: true,
+        synchronize: cs.get('app.isProduction') === false,
       }),
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
-
+export class AppModule {}

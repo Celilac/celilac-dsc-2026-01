@@ -17,9 +17,11 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
+    const existingUser = await this.usersRepository.findByEmail(
+      createUserDto.email,
+    );
     if (existingUser) {
-      throw new UserEmailAlreadyExistsException(createUserDto.email);
+      throw new UserEmailAlreadyExistsException();
     }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
@@ -39,7 +41,7 @@ export class UsersService {
   async findById(userId: string): Promise<UserResponseDto> {
     const user = await this.usersRepository.findById(userId);
     if (!user || user.deletedAt) {
-      throw new UserNotFoundException(userId);
+      throw new UserNotFoundException();
     }
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
@@ -55,10 +57,13 @@ export class UsersService {
       });
   }
 
-  async update(userId: string, updateUserDto: UpdateUserDto): Promise<UserResponseDto> {
+  async update(
+    userId: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserResponseDto> {
     const user = await this.usersRepository.findById(userId);
     if (!user || user.deletedAt) {
-      throw new UserNotFoundException(userId);
+      throw new UserNotFoundException();
     }
 
     if (updateUserDto.name) {
@@ -77,10 +82,9 @@ export class UsersService {
   async delete(userId: string): Promise<void> {
     const user = await this.usersRepository.findById(userId);
     if (!user || user.deletedAt) {
-      throw new UserNotFoundException(userId);
+      throw new UserNotFoundException();
     }
     user.deletedAt = new Date();
     await this.usersRepository.save(user);
   }
 }
-

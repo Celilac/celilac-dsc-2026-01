@@ -98,7 +98,9 @@ describe('AuthService', () => {
         service.login({ email: 'unknown@example.com', password: rawPassword }),
       ).rejects.toThrow(InvalidCredentialsException);
 
-      expect(usersRepository.findByEmail).toHaveBeenCalledWith('unknown@example.com');
+      expect(usersRepository.findByEmail).toHaveBeenCalledWith(
+        'unknown@example.com',
+      );
       expect(bcrypt.compare).not.toHaveBeenCalled();
       expect(jwtService.sign).not.toHaveBeenCalled();
     });
@@ -118,14 +120,17 @@ describe('AuthService', () => {
       ).rejects.toThrow(InvalidCredentialsException);
 
       expect(usersRepository.findByEmail).toHaveBeenCalledWith(email);
-      expect(bcrypt.compare).toHaveBeenCalledWith('wrongpassword', hashedPassword);
+      expect(bcrypt.compare).toHaveBeenCalledWith(
+        'wrongpassword',
+        hashedPassword,
+      );
       expect(jwtService.sign).not.toHaveBeenCalled();
     });
   });
 
   describe('logout', () => {
-    it('should return a logout success message', async () => {
-      const result = await service.logout();
+    it('should return a logout success message', () => {
+      const result = service.logout();
       expect(result).toEqual({ message: 'Logout realizado com sucesso.' });
     });
   });

@@ -1,1 +1,15 @@
-{}
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Postgres-DSC",
+            "database": "celillac_db",
+            "username": "celillac"
+        }
+    ],
+    "git.ignoreLimitWarning": true
+}

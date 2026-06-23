@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: celillac-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-celillac}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-celillac}
+      POSTGRES_DB: ${DB_DATABASE:-celillac_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - celillac-net
+
+  backend:
+    build:
+      context: ./celillac-backend
+      target: builder
+    container_name: celillac-backend
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./celillac-backend:/app
+      - /app/node_modules
+    command: sh -c "pnpm install && pnpm run start:dev"
+    environment:
+      - PORT=3002
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME:-celillac}
+      - DB_PASSWORD=${DB_PASSWORD:-celillac}
+      - DB_DATABASE=${DB_DATABASE:-celillac_db}
+      - CI=true
+    depends_on:
+      - postgres
+    networks:
+      - celillac-net
+    develop:
+      watch:
+        - action: sync
+          path: ./celillac-backend
+          target: /app
+          ignore:
+            - node_modules/
+            - dist/
+        - action: rebuild
+          path: ./celillac-backend/package.json
+        - action: rebuild
+          path: ./celillac-backend/pnpm-lock.yaml
+
+  frontend:
+    build:
+      context: ./celillac-frontend
+    container_name: celillac-frontend
+    restart: unless-stopped
+    ports:
+      - "5174:5173"
+    volumes:
+      - ./celillac-frontend:/app
+      - /app/node_modules
+    command: sh -c "pnpm install && pnpm run dev"
+    environment:
+      - CI=true
+    depends_on:
+      - backend
+    networks:
+      - celillac-net
+    develop:
+      watch:
+        - action: sync
+          path: ./celillac-frontend
+          target: /app
+          ignore:
+            - node_modules/
+            - dist/
+        - action: rebuild
+          path: ./celillac-frontend/package.json
+        - action: rebuild
+          path: ./celillac-frontend/pnpm-lock.yaml
+
+volumes:
+  postgres_data:
+
+networks:
+  celillac-net:
+    driver: bridge
