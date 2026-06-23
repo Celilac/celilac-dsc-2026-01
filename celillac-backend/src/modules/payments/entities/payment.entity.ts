@@ -1,4 +1,4 @@
-import { PaymentStatusEnum } from 'src/common/payments/enums/payment-status.enum';
+import { PaymentStatusEnum } from '../../../common/payments/enums/payment-status.enum';
 import {
   Column,
   CreateDateColumn,

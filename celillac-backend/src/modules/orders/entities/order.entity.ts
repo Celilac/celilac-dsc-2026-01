@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { OrderStatusEnum } from 'src/common/orders/enums/order-status.enum';
+import { OrderStatusEnum } from '../../../common/orders/enums/order-status.enum';
 import {
   Column,
   CreateDateColumn,

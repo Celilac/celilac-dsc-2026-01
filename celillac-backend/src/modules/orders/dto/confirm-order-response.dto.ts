@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from 'src/common/orders/enums/order-status.enum';
+import { OrderStatusEnum } from '../../../common/orders/enums/order-status.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ConfirmOrderResponseDto {
