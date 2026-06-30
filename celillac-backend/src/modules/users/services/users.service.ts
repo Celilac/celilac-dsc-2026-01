@@ -7,7 +7,7 @@ import { UserEntity } from '../entities/user.entity';
 import { UserResponseDto } from '../dto/user-response.dto';
 import { UserEmailAlreadyExistsException } from '../../../common/users/exceptions/user-email-already-exists.exception';
 import { UserNotFoundException } from '../../../common/users/exceptions/user-not-found.exception';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
