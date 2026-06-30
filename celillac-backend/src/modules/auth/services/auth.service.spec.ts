@@ -5,10 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../../users/entities/user.entity';
 import { UserRoleEnum } from '../../../common/users/enums/user-role.enum';
 import { InvalidCredentialsException } from '../../../common/auth/exceptions/invalid-credentials.exception';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
 
-jest.mock('bcrypt');
+jest.mock('bcryptjs');
 
 describe('AuthService', () => {
   let service: AuthService;

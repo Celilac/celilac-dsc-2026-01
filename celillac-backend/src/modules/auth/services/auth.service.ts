@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from '../dto/login.dto';
 import { UserResponseDto } from '../../users/dto/user-response.dto';
 import { InvalidCredentialsException } from '../../../common/auth/exceptions/invalid-credentials.exception';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {

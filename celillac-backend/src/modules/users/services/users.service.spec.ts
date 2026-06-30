@@ -7,9 +7,9 @@ import type { IUsersRepository } from '../repositories/users.repository.interfac
 import { UserEntity } from '../entities/user.entity';
 import { UserEmailAlreadyExistsException } from '../../../common/users/exceptions/user-email-already-exists.exception';
 import { UserNotFoundException } from '../../../common/users/exceptions/user-not-found.exception';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
-jest.mock('bcrypt');
+jest.mock('bcryptjs');
 
 describe('UsersService', () => {
   let service: UsersService;

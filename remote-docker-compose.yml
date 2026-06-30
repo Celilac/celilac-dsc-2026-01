@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: celillac-db
+    environment:
+      POSTGRES_USER: celillac
+      POSTGRES_PASSWORD: senha_segura_aqui
+      POSTGRES_DB: celillac_db
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  api:
+    image: ghcr.io/celilac/celillac-backend:latest
+    container_name: celillac-api
+    depends_on:
+      - postgres
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    restart: unless-stopped
