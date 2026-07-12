@@ -11,7 +11,7 @@ describe('ProductsController', () => {
   const mockCreateProductDto: CreateProductDto = {
     name: 'Bolo sem glúten',
     description: 'Bolo artesanal sem glúten',
-    price: 25.90,
+    price: 25.9,
     partnerId: 'partner-001',
   };
 

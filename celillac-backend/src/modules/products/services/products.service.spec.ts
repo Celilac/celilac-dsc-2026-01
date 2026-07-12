@@ -3,22 +3,22 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { ProductStatusEnum } from '../../../common/products/enums/product-status.enum';
 import { IPRODUCTS_REPOSITORY } from '../repositories/products.repository.interface';
-import type { IProductsRepository } from '../repositories/products.repository.interface';
 import { ProductEntity } from '../entities/product.entity';
 
 describe('ProductsService', () => {
   let service: ProductsService;
-  let repository: IProductsRepository;
 
   const mockCreateProductDto: CreateProductDto = {
     name: 'Bolo sem glúten',
     description: 'Bolo artesanal sem glúten',
-    price: 25.90,
+    price: 25.9,
     partnerId: 'partner-001',
   };
 
   const mockProductsRepository = {
-    save: jest.fn().mockImplementation((product: ProductEntity) => Promise.resolve(product)),
+    save: jest
+      .fn()
+      .mockImplementation((product: ProductEntity) => Promise.resolve(product)),
   };
 
   beforeEach(async () => {
@@ -33,7 +33,6 @@ describe('ProductsService', () => {
     }).compile();
 
     service = module.get<ProductsService>(ProductsService);
-    repository = module.get<IProductsRepository>(IPRODUCTS_REPOSITORY);
   });
 
   it('should be defined', () => {

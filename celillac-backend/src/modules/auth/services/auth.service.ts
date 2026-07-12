@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from '../dto/login.dto';
 import { UserResponseDto } from '../../users/dto/user-response.dto';
 import { InvalidCredentialsException } from '../../../common/auth/exceptions/invalid-credentials.exception';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -17,14 +17,20 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<{
     accessToken: string;
-    user: Omit<UserResponseDto, 'name' | 'createdAt' | 'updatedAt' | 'deletedAt'>;
+    user: Omit<
+      UserResponseDto,
+      'name' | 'createdAt' | 'updatedAt' | 'deletedAt'
+    >;
   }> {
     const user = await this.usersRepository.findByEmail(loginDto.email);
     if (!user || user.deletedAt) {
       throw new InvalidCredentialsException();
     }
 
-    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
     if (!isPasswordValid) {
       throw new InvalidCredentialsException();
     }
@@ -38,7 +44,8 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
 
     // Omit password, name, and date fields from returned user entity
-    const { password, name, createdAt, updatedAt, deletedAt, ...userResponse } = user;
+    const { password, name, createdAt, updatedAt, deletedAt, ...userResponse } =
+      user;
 
     return {
       accessToken,
@@ -46,7 +53,7 @@ export class AuthService {
     };
   }
 
-  async logout(): Promise<{ message: string }> {
+  logout(): { message: string } {
     return { message: 'Logout realizado com sucesso.' };
   }
 }
